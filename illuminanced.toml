@@ -8,11 +8,11 @@ log_level = "ERROR"
 [general]
 check_period_in_seconds = 1
 light_steps = 10
-min_backlight = 70
+min_backlight = 100
 step_barrier = 0.1
 max_backlight_file = "/sys/class/backlight/intel_backlight/max_brightness"
 backlight_file = "/sys/class/backlight/intel_backlight/brightness"
-illuminance_file = "/sys/bus/acpi/devices/ACPI0008:00/iio:device0/in_illuminance_raw"
+illuminance_file = "/sys/bus/iio/devices/iio:device0/in_illuminance_raw"
 event_device_mask = "/dev/input/event*"
 event_device_name = "Asus WMI hotkeys"
 enable_max_brightness_mode = true
@@ -30,17 +30,17 @@ illuminance_0 = 0
 light_0 = 0
 
 illuminance_1 = 20
-light_1 = 1
+light_1 = 2
 
-illuminance_2 = 300
-light_2 = 3
+illuminance_2 = 200
+light_2 = 4
 
 illuminance_3 = 700
-light_3 = 4
+light_3 = 5
 
 illuminance_4 = 1100
-light_4 = 5
+light_4 = 9
 
-illuminance_5 = 7100
+illuminance_5 = 3984
 light_5 = 10
 
