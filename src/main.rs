@@ -11,7 +11,7 @@ use std::io::prelude::*;
 use std::fs::{File, OpenOptions};
 use daemonize::Daemonize;
 use syslog::Facility;
-use simplelog::{WriteLogger, LogLevelFilter, Config as LoggerConfig, TermLogger};
+use simplelog::{WriteLogger, LogLevelFilter, Config as LoggerConfig, TermLogger, SimpleLogger};
 use kalman::Kalman;
 use config::Config;
 use getopts::Options;
@@ -253,7 +253,13 @@ fn run() -> Result<(), ErrorCode> {
     }
 
     if matches.opt_present("no-fork") {
-        let _ = TermLogger::init(LogLevelFilter::Debug, LoggerConfig::default());
+        if TermLogger::init(LogLevelFilter::Debug, LoggerConfig::default()).is_err() {
+            SimpleLogger::init(LogLevelFilter::Debug, LoggerConfig::default())
+                .map_err(|e| {
+                    eprintln!("Cannot initialize logger: {}", e);
+                    ErrorCode::TracerCreateError
+                })?;
+        }
     } else {
         if matches.opt_present("log") || !config.log_to_syslog() {
             let log_filename = matches.opt_str("log").unwrap_or(config.log_filename().to_string());
