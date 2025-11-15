@@ -12,7 +12,7 @@ use daemonize::Daemonize;
 use getopts::Options;
 use kalman::Kalman;
 use simplelog::{
-    ColorChoice, Config as LoggerConfig, LevelFilter, TermLogger, TerminalMode, WriteLogger,
+    ColorChoice, Config as LoggerConfig, LevelFilter, SimpleLogger, TermLogger, TerminalMode, WriteLogger,
 };
 use std::env;
 use std::fs::{File, OpenOptions};
@@ -253,12 +253,18 @@ fn run() -> Result<(), ErrorCode> {
     };
 
     if matches.opt_present("d") {
-        let _ = TermLogger::init(
+        if TermLogger::init(
             LevelFilter::Debug,
             LoggerConfig::default(),
             TerminalMode::Stdout,
             ColorChoice::Auto,
-        );
+        ).is_err() {
+            SimpleLogger::init(LevelFilter::Debug, LoggerConfig::default())
+                .map_err(|e| {
+                    eprintln!("Cannot initialize logger: {}", e);
+                    ErrorCode::TracerCreateError
+                })?;
+        }
     } else if matches.opt_present("log") || !config.log_to_syslog() {
         let log_filename = matches
             .opt_str("log")
