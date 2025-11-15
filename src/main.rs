@@ -48,7 +48,7 @@ impl LightConvertor {
             None => self.points.last().unwrap().light as f32,
             Some(0) => self.points[0].light as f32,
             Some(right_index) => {
-                debug!("right index: {}", right_index);
+                trace!("light conversion using points index: {}", right_index);
                 let left = &self.points[right_index - 1];
                 let right = &self.points[right_index];
                 let diff = (right.illuminance - left.illuminance) as f32;
@@ -114,7 +114,7 @@ fn main_loop(config: &Config,
             Some(illuminance) => {
                 let illuminance_k = kalman.process(illuminance as f32);
                 let brightness = light_convertor.get_light(illuminance_k as u32);
-                debug!("ambient light: raw={} kalman={:.1} -> brightness level={:.2}",
+                trace!("ambient light: raw={} kalman={:.1} -> brightness level={:.2}",
                        illuminance, illuminance_k, brightness);
                 if let Some(new) = stepped_brightness.update(brightness) {
                     info!("BRIGHTNESS CHANGED: ambient light raw={} kalman={:.1} -> level={:.2} -> hardware brightness={}",
