@@ -9,7 +9,7 @@ log_level = "ERROR"
 # Backlight brightness levels are remapped from
 # [min_backlight, max_backlight_file] to [0, light_steps]
 [general]
-check_period_in_seconds = 1
+check_period_in_seconds = 2
 light_steps = 10
 min_backlight = 10000
 step_barrier = 0.1
