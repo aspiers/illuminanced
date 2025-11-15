@@ -1,9 +1,10 @@
 [daemonize]
 # log_to = "syslog" or /file/path
 log_to = "syslog"
+#log_to = "/tmp/illuminance.log"
 pid_file = "/var/run/illuminanced.pid"
 # log_level = "OFF", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"
-log_level = "ERROR"
+log_level = "INFO"
 
 # https://github.com/mikhail-m1/illuminanced/issues/12
 # Backlight brightness levels are remapped from
