@@ -19,7 +19,7 @@ impl DiscreteValue {
     }
     pub fn update(&mut self, level: f32) -> Option<u32> {
         let diff = level - self.last_level;
-        debug!("brightness level change: {:.2} -> {:.2} (diff: {:.2}, barrier: {:.2})",
+        trace!("brightness level change: {:.2} -> {:.2} (diff: {:.2}, barrier: {:.2})",
                self.last_level, level, diff, self.barrier);
         // Symmetric threshold: require crossing barrier in either direction
         if diff.abs() > self.barrier {
