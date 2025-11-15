@@ -37,7 +37,7 @@ impl LightConvertor {
                               light: 0,
                           });
         }
-        debug!("Points: {:?}", points);
+        debug!("light conversion points (illuminance -> brightness level): {:?}", points);
         LightConvertor { points: points }
     }
 
@@ -108,19 +108,17 @@ fn main_loop(config: &Config,
                                                                     max_brightness,
                                                                     config.light_steps(),
                                                                     config.step_barrier());
-    debug!("k: s:{:?}", stepped_brightness);
+    debug!("initialized DiscreteValue: {:?}", stepped_brightness);
     loop {
         match read_file_to_u32(config.illuminance_filename()) {
             Some(illuminance) => {
                 let illuminance_k = kalman.process(illuminance as f32);
                 let brightness = light_convertor.get_light(illuminance_k as u32);
-                debug!("{}, {}, {}", illuminance, illuminance_k, brightness);
+                debug!("ambient light: raw={} kalman={:.1} -> brightness level={:.2}",
+                       illuminance, illuminance_k, brightness);
                 if let Some(new) = stepped_brightness.update(brightness) {
-                    info!("raw {}, kalman {}, new level {} new brightness {}",
-                          illuminance,
-                          illuminance_k,
-                          brightness,
-                          new);
+                    info!("BRIGHTNESS CHANGED: ambient light raw={} kalman={:.1} -> level={:.2} -> hardware brightness={}",
+                          illuminance, illuminance_k, brightness, new);
                     set_brightness(config, new);
                 }
             }
