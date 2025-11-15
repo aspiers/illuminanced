@@ -190,14 +190,10 @@ pub enum ErrorCode {
     SyslogOpenError,
 }
 
-fn parse_config(config: &String) -> Result<toml::Table, ErrorCode> {
-    let mut config_parser = toml::Parser::new(&config);
-    config_parser.parse()
-        .ok_or_else(|| {
-            println!("Cannot parse config file:");
-            for ref e in config_parser.errors.iter() {
-                println!("{} at `{}`", e, &config[e.lo..e.hi]);
-            }
+fn parse_config(config: &String) -> Result<toml::Value, ErrorCode> {
+    config.parse::<toml::Value>()
+        .map_err(|e| {
+            println!("Cannot parse config file: {}", e);
             ErrorCode::ConfigParseError
         })
 }

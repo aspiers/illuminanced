@@ -5,11 +5,11 @@ use log::LogLevelFilter;
 use std::str::FromStr;
 
 pub struct Config {
-    table: Option<toml::Table>,
+    table: Option<toml::Value>,
 }
 
 impl Config {
-    pub fn new(table: Option<toml::Table>) -> Self {
+    pub fn new(table: Option<toml::Value>) -> Self {
         Config { table: table }
     }
 
